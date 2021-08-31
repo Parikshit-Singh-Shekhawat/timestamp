@@ -24,6 +24,29 @@ app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
+// your first Timestamp API endpoint... 
+app.get(["/api/:date","/api/"], function (req, res) {
+  var date=req.params.date;
+  if(date){
+    if(isNaN(date)){
+      if(isNaN(Date.parse(date))){
+        res.json({error: 'Invalid date'});
+      } else {
+        var newDate=new Date(date);
+        res.json({unix: newDate.getTime(),
+        utc: newDate.toUTCString()});
+      }
+    } else {
+      var long_date=new Date(Number(date));
+      res.json({unix: long_date.getTime(),
+        utc: long_date.toUTCString()});
+    }
+  } else {
+    var new_date=new Date();
+      res.json({unix: new_date.getTime(),
+      utc: new_date.toUTCString()});
+  }
+});
 
 
 // listen for requests :)
